@@ -1,3 +1,6 @@
+using CleanArchApi.Application.Interfaces;
+using CleanArchApi.Application.Mappings;
+using CleanArchApi.Application.Services;
 using CleanArchApi.Domain.Interfaces;
 using CleanArchApi.Infra.Context;
 using CleanArchApi.Infra.Repositories;
@@ -17,6 +20,21 @@ public static class DependencyInjection
 
         services.AddScoped<ICategoryRepository, CategoryRepository>();
         services.AddScoped<IProductRepository, ProductRepository>();
+
+        return services;
+    }
+
+    public static IServiceCollection AddService(this IServiceCollection services)
+    {
+        services.AddScoped<ICategoryService, CategoryService>();
+        services.AddScoped<ProductService, ProductService>();
+
+        return services;
+    }
+
+    public static IServiceCollection AddAutoMapper(this IServiceCollection services)
+    {
+        services.AddAutoMapper(typeof(EntityToDTOMappingProfile));
 
         return services;
     }

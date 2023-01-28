@@ -9,5 +9,5 @@ public interface IProductRepository
     Task<Product> GetProductWithCategoryAsync(int? id);
     Task<Product> InsertProductAsync(Product product);
     Task<Product> UpdateProductAsync(Product product);
-    Task DeleteProductAsync(Product product);
+    Task<Product> DeleteProductAsync(Product product);
 }

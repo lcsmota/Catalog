@@ -47,9 +47,11 @@ public class ProductRepository : IProductRepository
         return product;
     }
 
-    public async Task DeleteProductAsync(Product product)
+    public async Task<Product> DeleteProductAsync(Product product)
     {
         _context.Products.Remove(product);
         await _context.SaveChangesAsync();
+
+        return product;
     }
 }

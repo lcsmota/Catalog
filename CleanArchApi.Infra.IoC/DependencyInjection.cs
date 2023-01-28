@@ -4,6 +4,7 @@ using CleanArchApi.Application.Services;
 using CleanArchApi.Domain.Interfaces;
 using CleanArchApi.Infra.Context;
 using CleanArchApi.Infra.Repositories;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -35,6 +36,14 @@ public static class DependencyInjection
     public static IServiceCollection AddAutoMapper(this IServiceCollection services)
     {
         services.AddAutoMapper(typeof(EntityToDTOMappingProfile));
+
+        return services;
+    }
+
+    public static IServiceCollection AddMediatR(this IServiceCollection services)
+    {
+        var handler = AppDomain.CurrentDomain.Load(nameof(CleanArchApi.Application));
+        services.AddMediatR(handler);
 
         return services;
     }

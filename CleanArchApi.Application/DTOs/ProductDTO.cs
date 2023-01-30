@@ -1,7 +1,6 @@
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using CleanArchApi.Domain.Entities;
 
 namespace CleanArchApi.Application.DTOs;
 
@@ -38,5 +37,4 @@ public class ProductDTO
 
     [DisplayName("Categories")]
     public int CategoryId { get; set; }
-    public Category Category { get; set; }
 }

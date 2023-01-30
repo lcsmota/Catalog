@@ -28,7 +28,7 @@ public static class DependencyInjection
     public static IServiceCollection AddService(this IServiceCollection services)
     {
         services.AddScoped<ICategoryService, CategoryService>();
-        services.AddScoped<ProductService, ProductService>();
+        services.AddScoped<IProductService, ProductService>();
 
         return services;
     }
@@ -42,7 +42,7 @@ public static class DependencyInjection
 
     public static IServiceCollection AddMediatR(this IServiceCollection services)
     {
-        var handler = AppDomain.CurrentDomain.Load(nameof(CleanArchApi.Application));
+        var handler = AppDomain.CurrentDomain.Load("CleanArchApi.Application");
         services.AddMediatR(handler);
 
         return services;

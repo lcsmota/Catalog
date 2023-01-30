@@ -1,8 +1,10 @@
+using System.Text.Json.Serialization;
 using CleanArchApi.Infra.IoC;
 
 var builder = WebApplication.CreateBuilder(args);
 {
-    builder.Services.AddControllers();
+    builder.Services.AddControllers().AddJsonOptions(options =>
+        options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
 
     builder.Services.AddInfrastructure(builder.Configuration);
     builder.Services.AddService();

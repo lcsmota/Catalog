@@ -10,9 +10,10 @@ var builder = WebApplication.CreateBuilder(args);
     builder.Services.AddService();
     builder.Services.AddAutoMapper();
     builder.Services.AddMediatR();
+    builder.Services.AddAuth(builder.Configuration);
 
     builder.Services.AddEndpointsApiExplorer();
-    builder.Services.AddSwaggerGen();
+    builder.Services.AddSwagger();
 }
 
 var app = builder.Build();
@@ -25,7 +26,7 @@ var app = builder.Build();
 
     app.UseHttpsRedirection();
 
-    app.UseAuthorization();
+    app.UseAuth();
 
     app.MapControllers();
 

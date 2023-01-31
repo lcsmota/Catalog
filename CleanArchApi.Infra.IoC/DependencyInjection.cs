@@ -1,8 +1,10 @@
 using CleanArchApi.Application.Interfaces;
 using CleanArchApi.Application.Mappings;
 using CleanArchApi.Application.Services;
+using CleanArchApi.Domain.Auth;
 using CleanArchApi.Domain.Interfaces;
 using CleanArchApi.Infra.Context;
+using CleanArchApi.Infra.Identity;
 using CleanArchApi.Infra.Repositories;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -21,6 +23,8 @@ public static class DependencyInjection
 
         services.AddScoped<ICategoryRepository, CategoryRepository>();
         services.AddScoped<IProductRepository, ProductRepository>();
+
+        services.AddScoped<IAuthenticate, AuthenticateUser>();
 
         return services;
     }

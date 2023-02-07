@@ -23,7 +23,7 @@ public class AuthController : ControllerBase
 
     [HttpPost("RegisterUser")]
     [ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Post))]
-    public async Task<ActionResult> RegisterUser(LoginUser userInfo)
+    public async Task<ActionResult> RegisterUser(RegisterUser userInfo)
     {
         var result = await _auth.RegisterUserAsync(userInfo.Email, userInfo.Password);
 

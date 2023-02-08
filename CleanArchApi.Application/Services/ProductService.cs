@@ -13,6 +13,7 @@ public class ProductService : IProductService
 {
     private readonly IMapper _mapper;
     private readonly IMediator _mediator;
+
     public ProductService(IProductRepository productRepo, IMapper mapper, IMediator mediator)
     {
         _mapper = mapper;
@@ -63,7 +64,7 @@ public class ProductService : IProductService
 
     public async Task UpdateProductAsync(ProductDTO productDTO)
     {
-        var productUpdateCommand = _mapper.Map<ProductCreateCommand>(productDTO);
+        var productUpdateCommand = _mapper.Map<ProductUpdateCommand>(productDTO);
         await _mediator.Send(productUpdateCommand);
     }
 

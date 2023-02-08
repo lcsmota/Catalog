@@ -10,6 +10,7 @@ namespace CleanArchApi.WebApi.Controllers;
 public class CategoriesController : ControllerBase
 {
     private readonly ICategoryService _categoryService;
+
     public CategoriesController(ICategoryService categoryService)
     {
         _categoryService = categoryService;
@@ -59,9 +60,9 @@ public class CategoriesController : ControllerBase
         var category = await _categoryService.GetCategoryByIdAsync(categoryDTO.Id);
         if (category is null) return NotFound("Category not found.");
 
-        await _categoryService.UpdateCategoryAsync(category);
+        await _categoryService.UpdateCategoryAsync(categoryDTO);
 
-        return Ok(category);
+        return Ok(categoryDTO);
     }
 
     [HttpDelete("{id:int}")]

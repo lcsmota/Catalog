@@ -38,6 +38,17 @@ public class ProductsController : ControllerBase
         return Ok(product);
     }
 
+    [HttpGet("{id:int}/ProductWithCategory")]
+    [ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Get))]
+    public async Task<ActionResult<ProductDTO>> GetProductByIdWithCategoryAsync(int id)
+    {
+        var product = await _productService.GetProductWithCategoryAsync(id);
+
+        if (product is null) return NotFound("Product not found.");
+
+        return Ok(product);
+    }
+
     [HttpPost]
     [ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Post))]
     public async Task<ActionResult<ProductDTO>> PostAsync(ProductDTO productDTO)
@@ -60,9 +71,9 @@ public class ProductsController : ControllerBase
         var product = await _productService.GetProductByIdAsync(productDTO.Id);
         if (product is null) return NotFound("Product not found.");
 
-        await _productService.UpdateProductAsync(product);
+        await _productService.UpdateProductAsync(productDTO);
 
-        return Ok(product);
+        return Ok(productDTO);
     }
 
     [HttpDelete("{id:int}")]

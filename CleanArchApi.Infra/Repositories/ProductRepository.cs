@@ -8,6 +8,7 @@ namespace CleanArchApi.Infra.Repositories;
 public class ProductRepository : IProductRepository
 {
     private readonly AppDbContext _context;
+
     public ProductRepository(AppDbContext context)
     {
         _context = context;
@@ -20,7 +21,9 @@ public class ProductRepository : IProductRepository
 
     public async Task<Product> GetProductByIdAsync(int? id)
     {
-        return await _context.Products.FindAsync(id);
+        return await _context.Products
+            .AsNoTracking()
+            .FirstOrDefaultAsync(e => e.Id == id);
     }
 
     public async Task<Product> GetProductWithCategoryAsync(int? id)

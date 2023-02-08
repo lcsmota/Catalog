@@ -8,6 +8,7 @@ namespace CleanArchApi.Infra.Repositories;
 public class CategoryRepository : ICategoryRepository
 {
     private readonly AppDbContext _context;
+
     public CategoryRepository(AppDbContext context)
     {
         _context = context;
@@ -20,7 +21,9 @@ public class CategoryRepository : ICategoryRepository
 
     public async Task<Category> GetCategoryByIdAsync(int? id)
     {
-        return await _context.Categories.FindAsync(id);
+        return await _context.Categories
+            .AsNoTracking()
+            .FirstOrDefaultAsync(e => e.Id == id);
     }
 
     public async Task<Category> InsertCategoryAsync(Category category)

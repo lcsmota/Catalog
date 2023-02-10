@@ -1,12 +1,13 @@
 using CleanArchApi.Application.DTOs;
+using CleanArchApi.Application.Services;
 
 namespace CleanArchApi.Application.Interfaces;
 
 public interface ICategoryService
 {
-    Task<IEnumerable<CategoryDTO>> GetCategoriesAsync();
-    Task<CategoryDTO> GetCategoryByIdAsync(int? id);
-    Task InsertCategoryAsync(CategoryDTO categoryDTO);
-    Task UpdateCategoryAsync(CategoryDTO categoryDTO);
-    Task DeleteCategoryAsync(int? id);
+    Task<ResultService<IEnumerable<CategoryDTO>>> GetCategoriesAsync();
+    Task<ResultService<CategoryDTO>> GetCategoryByIdAsync(int? id);
+    Task<ResultService<CategoryDTO>> InsertCategoryAsync(CategoryDTO categoryDTO);
+    Task<ResultService> UpdateCategoryAsync(CategoryDTO categoryDTO);
+    Task<ResultService> DeleteCategoryAsync(int? id);
 }

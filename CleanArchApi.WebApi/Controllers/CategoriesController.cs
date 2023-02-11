@@ -22,9 +22,9 @@ public class CategoriesController : ControllerBase
     {
         var categories = await _categoryService.GetCategoriesAsync();
 
-        if (!categories.Any()) return NotFound("Products not found.");
-
-        return Ok(categories);
+        return categories.IsSuccess
+            ? Ok(categories)
+            : NotFound(categories);
     }
 
     [HttpGet("{id:int}", Name = "GetCategory")]
@@ -33,48 +33,41 @@ public class CategoriesController : ControllerBase
     {
         var category = await _categoryService.GetCategoryByIdAsync(id);
 
-        if (category is null) return NotFound("Category not found.");
-
-        return Ok(category);
+        return category.IsSuccess
+            ? Ok(category)
+            : NotFound(category);
     }
 
     [HttpPost]
     [ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Post))]
-    public async Task<ActionResult<CategoryDTO>> PostAsync(CategoryDTO categoryDTO)
+    public async Task<ActionResult> PostAsync(CategoryDTO categoryDTO)
     {
-        if (categoryDTO is null)
-            return BadRequest("Invalid data. Check the field(s) and try again.");
+        var result = await _categoryService.InsertCategoryAsync(categoryDTO);
 
-        await _categoryService.InsertCategoryAsync(categoryDTO);
-
-        return new CreatedAtRouteResult("GetCategory", new { id = categoryDTO.Id }, categoryDTO);
+        return result.IsSuccess
+            ? Ok(result)
+            : BadRequest(result);
     }
 
-    [HttpPut("{id:int}")]
+    [HttpPut()]
     [ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Put))]
-    public async Task<ActionResult<CategoryDTO>> PutAsync(int id, CategoryDTO categoryDTO)
+    public async Task<ActionResult<CategoryDTO>> PutAsync(CategoryDTO categoryDTO)
     {
-        if (id != categoryDTO.Id || categoryDTO is null)
-            return BadRequest("Invalid data. Check the field(s) and try again.");
+        var category = await _categoryService.UpdateCategoryAsync(categoryDTO);
 
-        var category = await _categoryService.GetCategoryByIdAsync(categoryDTO.Id);
-        if (category is null) return NotFound("Category not found.");
-
-        await _categoryService.UpdateCategoryAsync(categoryDTO);
-
-        return Ok(categoryDTO);
+        return category.IsSuccess
+            ? Ok(categoryDTO)
+            : BadRequest(category);
     }
 
     [HttpDelete("{id:int}")]
     [ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Delete))]
     public async Task<ActionResult> DeleteAsync(int id)
     {
-        var category = await _categoryService.GetCategoryByIdAsync(id);
+        var category = await _categoryService.DeleteCategoryAsync(id);
 
-        if (category is null) return NotFound("Category not found.");
-
-        await _categoryService.DeleteCategoryAsync(id);
-
-        return NoContent();
+        return category.IsSuccess
+            ? Ok(category)
+            : NotFound(category);
     }
 }

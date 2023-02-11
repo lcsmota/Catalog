@@ -12,6 +12,11 @@ var builder = WebApplication.CreateBuilder(args);
     builder.Services.AddMediatR();
     builder.Services.AddAuth(builder.Configuration);
 
+    builder.Services.AddMvc().AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
+    });
+
     builder.Services.AddEndpointsApiExplorer();
     builder.Services.AddSwagger();
 }

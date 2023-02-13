@@ -1,5 +1,6 @@
 using CleanArchApi.Application.DTOs;
 using CleanArchApi.Application.Interfaces;
+using CleanArchApi.Domain.FiltersDb;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CleanArchApi.WebApi.Controllers;
@@ -36,6 +37,17 @@ public class CategoriesController : ControllerBase
         return category.IsSuccess
             ? Ok(category)
             : NotFound(category);
+    }
+
+    [HttpGet("Pagination")]
+    [ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Get))]
+    public async Task<ActionResult<CategoryDTO>> GetWithPaginationAsync([FromQuery] CategoryFilterDb categoryFilterDb)
+    {
+        var category = await _categoryService.GetPagedAsync(categoryFilterDb);
+
+        return category.IsSuccess
+            ? Ok(category)
+            : BadRequest(category);
     }
 
     [HttpPost]

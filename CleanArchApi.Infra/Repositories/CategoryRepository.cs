@@ -1,6 +1,9 @@
 using CleanArchApi.Domain.Entities;
+using CleanArchApi.Domain.FiltersDb;
 using CleanArchApi.Domain.Interfaces;
+using CleanArchApi.Domain.Pagination;
 using CleanArchApi.Infra.Context;
+using CleanArchApi.Infra.Pagination;
 using Microsoft.EntityFrameworkCore;
 
 namespace CleanArchApi.Infra.Repositories;
@@ -46,5 +49,16 @@ public class CategoryRepository : ICategoryRepository
     {
         _context.Categories.Remove(category);
         await _context.SaveChangesAsync();
+    }
+
+    public async Task<PagedBaseResponse<Category>> GetPagedAsync(CategoryFilterDb request)
+    {
+        var categories = _context.Categories.AsQueryable();
+
+        if (!string.IsNullOrEmpty(request.Name))
+            categories = categories.Where(e => e.Name.Contains(request.Name));
+
+        return await PagedBaseResponseHelper
+            .GetResponseAsync<PagedBaseResponse<Category>, Category>(categories, request);
     }
 }

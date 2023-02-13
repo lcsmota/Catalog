@@ -3,6 +3,7 @@ using CleanArchApi.Application.DTOs;
 using CleanArchApi.Application.Interfaces;
 using CleanArchApi.Application.Validations;
 using CleanArchApi.Domain.Entities;
+using CleanArchApi.Domain.FiltersDb;
 using CleanArchApi.Domain.Interfaces;
 
 namespace CleanArchApi.Application.Services;
@@ -80,5 +81,16 @@ public class CategoryService : ICategoryService
 
         await _categoryRepo.DeleteCategoryAsync(categoryDb);
         return ResultService.OK("Category deleted successfully.");
+    }
+
+    public async Task<ResultService<PagedBaseResponseDTO<CategoryDTO>>> GetPagedAsync(CategoryFilterDb categoryFilterDb)
+    {
+        var categoriesPaged = await _categoryRepo.GetPagedAsync(categoryFilterDb);
+
+        var result = new PagedBaseResponseDTO<CategoryDTO>(
+            categoriesPaged.TotalRegisters,
+            _mapper.Map<List<CategoryDTO>>(categoriesPaged.Datas));
+
+        return ResultService.OK(result);
     }
 }

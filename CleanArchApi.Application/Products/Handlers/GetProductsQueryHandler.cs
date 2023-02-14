@@ -7,13 +7,13 @@ namespace CleanArchApi.Application.Products.Handlers;
 
 public class GetProductsQueryHandler : IRequestHandler<GetProductsQuery, IEnumerable<Product>>
 {
-    private readonly IProductRepository _productRepo;
-    public GetProductsQueryHandler(IProductRepository productRepo)
+    private readonly IUnitOfWork _unitOfWork;
+    public GetProductsQueryHandler(IUnitOfWork unitOfWork)
     {
-        _productRepo = productRepo;
+        _unitOfWork = unitOfWork;
     }
     public async Task<IEnumerable<Product>> Handle(GetProductsQuery request, CancellationToken cancellationToken)
     {
-        return await _productRepo.GetProductsAsync();
+        return await _unitOfWork.ProductRepo.GetProductsAsync();
     }
 }

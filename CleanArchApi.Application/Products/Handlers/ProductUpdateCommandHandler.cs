@@ -7,16 +7,16 @@ namespace CleanArchApi.Application.Products.Handlers;
 
 public class ProductUpdateCommandHandler : IRequestHandler<ProductUpdateCommand, Product>
 {
-    private readonly IProductRepository _productRepo;
-    public ProductUpdateCommandHandler(IProductRepository productRepo)
+    private readonly IUnitOfWork _unitOfWork;
+    public ProductUpdateCommandHandler(IUnitOfWork unitOfWork)
     {
-        _productRepo = productRepo;
+        _unitOfWork = unitOfWork;
     }
 
     public async Task<Product> Handle(ProductUpdateCommand request, CancellationToken cancellationToken)
     {
 
-        var product = await _productRepo.GetProductByIdAsync(request.Id);
+        var product = await _unitOfWork.ProductRepo.GetProductByIdAsync(request.Id);
 
         if (product is null) throw new ApplicationException("Entity could not be found.");
 
@@ -28,7 +28,7 @@ public class ProductUpdateCommandHandler : IRequestHandler<ProductUpdateCommand,
             request.Image,
             request.CategoryId);
 
-        return await _productRepo.UpdateProductAsync(product);
+        return await _unitOfWork.ProductRepo.UpdateProductAsync(product);
 
     }
 }

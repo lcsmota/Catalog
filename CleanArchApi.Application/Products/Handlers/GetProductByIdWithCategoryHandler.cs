@@ -11,13 +11,13 @@ namespace CleanArchApi.Application.Products.Handlers;
 
 public class GetProductByIdWithCategoryHandler : IRequestHandler<GetProductByIdWithCategory, Product>
 {
-    private readonly IProductRepository _productRepo;
-    public GetProductByIdWithCategoryHandler(IProductRepository productRepo)
+    private readonly IUnitOfWork _unitOfWork;
+    public GetProductByIdWithCategoryHandler(IUnitOfWork unitOfWork)
     {
-        _productRepo = productRepo;
+        _unitOfWork = unitOfWork;
     }
     public async Task<Product> Handle(GetProductByIdWithCategory request, CancellationToken cancellationToken)
     {
-        return await _productRepo.GetProductWithCategoryAsync(request.Id);
+        return await _unitOfWork.ProductRepo.GetProductWithCategoryAsync(request.Id);
     }
 }

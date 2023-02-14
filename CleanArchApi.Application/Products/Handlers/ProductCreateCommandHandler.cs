@@ -7,10 +7,10 @@ namespace CleanArchApi.Application.Products.Handlers;
 
 public class ProductCreateCommandHandler : IRequestHandler<ProductCreateCommand, Product>
 {
-    private readonly IProductRepository _productRepo;
-    public ProductCreateCommandHandler(IProductRepository productRepo)
+    private readonly IUnitOfWork _unitOfWork;
+    public ProductCreateCommandHandler(IUnitOfWork unitOfWork)
     {
-        _productRepo = productRepo;
+        _unitOfWork = unitOfWork;
     }
 
     public async Task<Product> Handle(ProductCreateCommand request, CancellationToken cancellationToken)
@@ -26,6 +26,6 @@ public class ProductCreateCommandHandler : IRequestHandler<ProductCreateCommand,
 
         product.CategoryId = request.CategoryId;
 
-        return await _productRepo.InsertProductAsync(product);
+        return await _unitOfWork.ProductRepo.InsertProductAsync(product);
     }
 }

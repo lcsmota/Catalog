@@ -1,6 +1,8 @@
 using CleanArchApi.Application.DTOs;
 using CleanArchApi.Application.Interfaces;
 using CleanArchApi.Domain.FiltersDb;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CleanArchApi.WebApi.Controllers;
@@ -8,6 +10,7 @@ namespace CleanArchApi.WebApi.Controllers;
 [ApiController]
 [Route("api/v1/[controller]")]
 [Produces("application/json")]
+[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 public class CategoriesController : ControllerBase
 {
     private readonly ICategoryService _categoryService;
@@ -18,6 +21,7 @@ public class CategoriesController : ControllerBase
     }
 
     [HttpGet]
+    [AllowAnonymous]
     [ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Get))]
     public async Task<ActionResult<IEnumerable<CategoryDTO>>> GetAsync()
     {
@@ -29,6 +33,7 @@ public class CategoriesController : ControllerBase
     }
 
     [HttpGet("{id:int}", Name = "GetCategory")]
+    [AllowAnonymous]
     [ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Get))]
     public async Task<ActionResult<CategoryDTO>> GetAsync(int id)
     {

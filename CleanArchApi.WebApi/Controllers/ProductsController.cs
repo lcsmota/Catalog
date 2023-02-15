@@ -1,5 +1,7 @@
 using CleanArchApi.Application.DTOs;
 using CleanArchApi.Application.Interfaces;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CleanArchApi.WebApi.Controllers;
@@ -7,6 +9,7 @@ namespace CleanArchApi.WebApi.Controllers;
 [ApiController]
 [Route("api/[controller]")]
 [Produces("application/json")]
+[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 public class ProductsController : ControllerBase
 {
     private readonly IProductService _productService;
@@ -16,6 +19,7 @@ public class ProductsController : ControllerBase
     }
 
     [HttpGet]
+    [AllowAnonymous]
     [ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Get))]
     public async Task<ActionResult<IEnumerable<ProductDTO>>> GetProductsAsync()
     {
@@ -28,6 +32,7 @@ public class ProductsController : ControllerBase
     }
 
     [HttpGet("{id:int}", Name = "GetProduct")]
+    [AllowAnonymous]
     [ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Get))]
     public async Task<ActionResult<ProductDTO>> GetProductByIdAsync(int id)
     {
@@ -39,6 +44,7 @@ public class ProductsController : ControllerBase
     }
 
     [HttpGet("{id:int}/ProductWithCategory")]
+    [AllowAnonymous]
     [ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Get))]
     public async Task<ActionResult<ProductDTO>> GetProductByIdWithCategoryAsync(int id)
     {

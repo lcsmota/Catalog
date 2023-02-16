@@ -7,6 +7,7 @@ using CleanArchApi.Infra.Context;
 using CleanArchApi.Infra.Identity;
 using CleanArchApi.Infra.Repositories;
 using MediatR;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -56,5 +57,14 @@ public static class DependencyInjection
         services.AddMediatR(handler);
 
         return services;
+    }
+
+    public static void UseDataBaseConfiguration(this IApplicationBuilder app)
+    {
+        using var serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope();
+        using var context = serviceScope.ServiceProvider.GetService<AppDbContext>();
+
+        context.Database.Migrate();
+        context.Database.EnsureCreated();
     }
 }

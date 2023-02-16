@@ -29,6 +29,8 @@ var app = builder.Build();
         app.UseSwaggerUI();
     }
 
+    app.UseDataBaseConfiguration();
+
     app.UseHttpsRedirection();
 
     app.UseAuth();

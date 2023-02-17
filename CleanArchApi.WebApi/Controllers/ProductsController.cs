@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace CleanArchApi.WebApi.Controllers;
 
 [ApiController]
-[Route("api/[controller]")]
+[Route("api/v1/[controller]")]
 [Produces("application/json")]
 [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 public class ProductsController : ControllerBase

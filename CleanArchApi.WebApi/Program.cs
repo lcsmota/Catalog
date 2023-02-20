@@ -19,6 +19,8 @@ var builder = WebApplication.CreateBuilder(args);
 
     builder.Services.AddEndpointsApiExplorer();
     builder.Services.AddSwagger();
+
+    builder.Services.AddCors();
 }
 
 var app = builder.Build();
@@ -32,6 +34,11 @@ var app = builder.Build();
     }
 
     app.UseDataBaseConfiguration();
+
+    app.UseCors(conf => conf
+        .AllowAnyOrigin()
+        .AllowAnyMethod()
+        .AllowAnyHeader());
 
     app.UseHttpsRedirection();
 

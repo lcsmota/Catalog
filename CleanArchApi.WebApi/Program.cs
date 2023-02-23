@@ -1,5 +1,6 @@
 using System.Text.Json.Serialization;
 using CleanArchApi.Infra.IoC;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 {
@@ -21,6 +22,12 @@ var builder = WebApplication.CreateBuilder(args);
     builder.Services.AddSwagger();
 
     builder.Services.AddCors();
+
+    var logger = new LoggerConfiguration()
+        .ReadFrom.Configuration(builder.Configuration)
+        .CreateLogger();
+
+    builder.Logging.AddSerilog(logger);
 }
 
 var app = builder.Build();

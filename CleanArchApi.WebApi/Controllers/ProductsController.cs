@@ -13,9 +13,11 @@ namespace CleanArchApi.WebApi.Controllers;
 public class ProductsController : ControllerBase
 {
     private readonly IProductService _productService;
-    public ProductsController(IProductService productService)
+    private readonly ILogger<ProductsController> _logger;
+    public ProductsController(IProductService productService, ILogger<ProductsController> logger)
     {
         _productService = productService;
+        _logger = logger;
     }
 
     [HttpGet]
@@ -28,6 +30,7 @@ public class ProductsController : ControllerBase
 
         if (!products.Any()) return NotFound("Products not found.");
 
+        _logger.LogInformation($"Returned all products from database.");
         return Ok(products);
     }
 
@@ -38,8 +41,13 @@ public class ProductsController : ControllerBase
     {
         var product = await _productService.GetProductByIdAsync(id);
 
-        if (product is null) return NotFound("Product not found.");
+        if (product is null)
+        {
+            _logger.LogError($"Product with id: {id}, has not been found in database");
+            return NotFound("Product not found.");
+        }
 
+        _logger.LogInformation($"Returned product with id: {id}");
         return Ok(product);
     }
 
@@ -50,8 +58,13 @@ public class ProductsController : ControllerBase
     {
         var product = await _productService.GetProductWithCategoryAsync(id);
 
-        if (product is null) return NotFound("Product not found.");
+        if (product is null)
+        {
+            _logger.LogError($"Product with id: {id}, has not been found in database");
+            return NotFound("Product not found.");
+        }
 
+        _logger.LogInformation($"Returned product with id: {id} and your category");
         return Ok(product);
     }
 
@@ -60,7 +73,10 @@ public class ProductsController : ControllerBase
     public async Task<ActionResult<ProductDTO>> PostAsync(ProductDTO productDTO)
     {
         if (productDTO is null)
+        {
+            _logger.LogError($"Product object sent from client is null");
             return BadRequest("Invalid data. Check the field(s) and try again.");
+        }
 
         await _productService.InsertProductAsync(productDTO);
 
@@ -72,7 +88,10 @@ public class ProductsController : ControllerBase
     public async Task<ActionResult<ProductDTO>> PutAsync(int id, ProductDTO productDTO)
     {
         if (id != productDTO.Id || productDTO is null)
+        {
+            _logger.LogError($"Product object sent from client is null or invalid");
             return BadRequest("Invalid data. Check the field(s) and try again.");
+        }
 
         var product = await _productService.GetProductByIdAsync(productDTO.Id);
         if (product is null) return NotFound("Product not found.");
@@ -88,7 +107,11 @@ public class ProductsController : ControllerBase
     {
         var product = await _productService.GetProductByIdAsync(id);
 
-        if (product is null) return NotFound("Product not found.");
+        if (product is null)
+        {
+            _logger.LogError($"Product with id: {id}, has not been found in database");
+            return NotFound("Product not found.");
+        }
 
         await _productService.DeleteProductAsync(id);
 

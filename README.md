@@ -16,6 +16,7 @@
 - [x] AutoMapper
 - [x] JSON Web Token
 - [x] DTOs
+- [x] Serilog
 - [x] Repository Pattern
 - [x] Unit Of Work Pattern
 - [x] Pagination
